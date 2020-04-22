@@ -4,63 +4,90 @@ using namespace std;
 
 //поле
 class Area{
-	int hive[]; //улей
-	int flovers[];
+	protected: 
+		int hive[]; //улей
+		int flovers[];
 };
+
 
 class Hive{
-	int bees[];
-	int graz=0;
-	int med;
-	int water;
+	protected: 
+		int bees[];
+		double graz;
+		double med;
+		int water;
 	
 	public:
-	void foul(){ //загр€зн€тьс€
-		//for (int i=0; i<24; i=i+2){
+		Hive(){
+			graz=0;
+			cout<<"const_bees";
+		};
+		~Hive(){
+			cout<<"destr_hive";
+		};
+		void initial_condtion(){
+			cout<<"¬ведите начальное количество меда";
+			cin>>med;
+			cout<<"¬ведите начальное количество воды";
+			cin>>water;
+		};
+		void foul(){ //загр€зн€тьс€
 			graz=graz+1.5;
-		//}	
-	};
-	void build(){ 
-	};
-	void divide(){ //делитьс€
-	};
+		};
+		void build(){ 
+		};
+		void divide(){ //делитьс€
+		};
 };
 
-class Bees:public Hive{
-	int age;
-	int sitost=25;
-	int energy=110;
-	int drink=25;
+class Bees{
+	
+	protected: 
+		int age;
+		double sitost;
+		int energy;
+		double drink;
 	
 	public:
+		Bees(){
+			sitost=25;
+			energy=110;
+			drink=25;
+			cout<<"const_bees";
+		};
+		~Bees(){
+			cout<<"destr_bees";
+		};
 		void otdih(){
 			//for(int i=0;i<7; i++){
 				energy+=15;
 			//}
 		};
 		
-		virtual void eat_pok()=0;
+//		virtual void eat_pok()=0;
 		
 		virtual void eat_akt()=0;
 		
 		void drinking(){
-		
 			drink+=0.2;
 		};
 		die(){
 		};
 };
 
-class Working:public Bees{
-	void virtual func()=0;
-};
 
-class  Cleaner: public Working, public Hive{
+class Cleaner: public Bees, Hive{
+
 	public:
+	
+	void eat_akt(){
+		Hive::med-=0.3;
+		sitost+=0.3;
+	};
 	void cleaner_up(){
 			for (int i=0; i<60; i+=15){
-			if(graz!=0){
-					graz--;
+			if(Hive::graz!=0){
+					Hive::graz--;
 					sitost-=0.3;
 					drink-=0.2;
 					energy-=6;
@@ -81,48 +108,48 @@ class  Cleaner: public Working, public Hive{
 		};
 };
 
-void initial_condtion(){
-	cout<<"¬ведите начальное количество меда";
-	cin>>med;
-	cout<<"¬ведите начальное количество воды";
-	cin>>water;
-};
+
 
 int main(){
 	setlocale(LC_ALL, "rus");
+	
 	Cleaner obj_clean;
 	Hive obj_hive;
-	initial_condtion();
+	
+	obj_hive.initial_condtion();
+	
 	for (int i=0; i<24; i++){
 				switch(i){
 					case 1: 
-							obj_clean.cleaner_up();
 							obj_hive.foul();
+							obj_clean.cleaner_up();
 					break;
 					case 2: 
-							obj_clean.cleaner_up();
+							
 							obj_hive.foul();
+							obj_clean.cleaner_up();
 					break;
 					case 3: 
-							obj_clean.cleaner_up();
+							
 							obj_hive.foul();
+							obj_clean.cleaner_up();
 					break;
 					case 4: 
-							obj_clean.cleaner_up();
 							obj_hive.foul();
+							obj_clean.cleaner_up();
 							
 					break;
 					case 5: 
-							obj_clean.cleaner_up();
 							obj_hive.foul();
+							obj_clean.cleaner_up();
 					break;
 					case 6: 
-							obj_clean.cleaner_up();
 							obj_hive.foul();
+							obj_clean.cleaner_up();
 					break;
 					case 7: 
-							obj_clean.cleaner_up();
 							obj_hive.foul();
+							obj_clean.cleaner_up();
 					break;
 					case 8: 
 							obj_hive.foul();
