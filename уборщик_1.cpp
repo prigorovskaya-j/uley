@@ -85,54 +85,85 @@ public:
 	};
 
 	void otdih() {
-		//for(int i=0;i<7; i++){
-		energy += 15;
-		cout << "energy+15: " <<energy<< endl;
-		//}
+	
+		if(energy>0 && energy<110){
+			energy += 15;
+			cout << "energy+15: " <<energy<< endl;	
+		} else  cout << "energy: " <<energy<< endl;	
+		
+		
 	};
-
-	//		virtual void eat_pok()=0;
 
 	virtual void eat_akt() = 0;
 
 	void drinking() {
-		drink += 0.2;
-		cout << "drink +0.2" << endl;
-		cout<<"drink:"<<drink<<endl;
+		if (drink>0 && drink<=25){ 
+			drink += 0.2;
+			cout << "drink +0.2" << endl;
+			cout<<"drink:"<<drink<<endl;
+		} else cout<<"drink:"<<drink<<endl;
+		
 	};
-	void die() {
-	};
+	
+	virtual void die()=0;
 };
 
 
 class Cleaner : public Bees {
 
 public:
-	Cleaner(Hive& obj) : Bees(obj) {}
+	Cleaner(Hive& obj) : Bees(obj) {};
+	~Cleaner(){
+		cout<<"destr clean";	
+	};
+	
 	void test() {
 		cout << obj_hive.getGraz() << endl;
-	}
-	void eat_akt() {
-		obj_hive.editMed(-0.3);		//Hive::med-=0.3;
-		sitost += 0.3;
-		cout << "sitost +0.3; med -0.3" << endl;
-		cout<<"sitost"<<sitost<<endl;
 	};
+	void eat_akt() {
+		if(obj_hive.getMed()>0 && sitost>0 && sitost<=25){
+				obj_hive.editMed(-0.3);	 //Hive::med-=0.3;
+				sitost += 0.3;
+				cout << "sitost +0.3; med -0.3" << endl;
+				cout<<"sitost"<<sitost<<endl;	
+		} else {	
+			cout<<"sitost= "<<sitost<<endl;
+			cout<<"med"<<obj_hive.getMed();
+		};
+			
+	};
+	void die(){
+		this->~Cleaner();
+		cout<<"DIE CLEANER"<<endl;
+	};
+	
 	void cleaner_up() {
+		
+		if (sitost<=0 || drink<=0 || energy <=0){
+			die();
+		}
+		else
 		for (int i = 0; i < 60; i += 15) {
-			cout << obj_hive.getGraz();
+			cout << obj_hive.getGraz()<<endl;
+			
 			if (obj_hive.getGraz() != 0) { //Hive::graz!=0
-				obj_hive.editGraz(-1);	//Hive::graz--;
-				sitost -= 0.3;
-				drink -= 0.2;
-				energy -= 6;
-				cout << "graz -1; sitost -0.3; drink -0.2; energy -6" << endl;
-				cout<<"energy:"<<energy<<endl;
-				cout<<"drink:"<<drink<<endl;
-				cout<<"sitost"<<sitost<<endl;
-
-			}
-			else if (sitost < 25) {
+				if(sitost>0 && drink>0 && energy>6){
+					obj_hive.editGraz(-1);	//Hive::graz--;
+					sitost -= 0.3;
+					drink -= 0.2;
+					energy -= 6;
+					cout << "graz -1; sitost -0.3; drink -0.2; energy -6" << endl;
+					cout<<"energy:"<<energy<<endl;
+					cout<<"drink:"<<drink<<endl;
+					cout<<"sitost"<<sitost<<endl;	
+				}	else {
+						cout<<"graz ="<<obj_hive.getGraz()<<endl;
+						cout<<"energy="<<energy<<endl;
+						cout<<"drink="<<drink<<endl;
+						cout<<"sitost="<<sitost<<endl;
+					}
+			};
+			if (sitost>0 && sitost<25 && drink>0 && energy>0) {
 				eat_akt();
 				drink -= 0.2;
 				energy -= 6;
@@ -143,7 +174,7 @@ public:
 			else if (drink < 25) {
 				drinking();
 			}
-			else if (energy < 110) {
+			else if (energy < 110 && sitost>0 && drink>0) {
 				otdih();
 				sitost -= 0.2;
 				drink -= 0.2;
