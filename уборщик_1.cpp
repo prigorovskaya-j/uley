@@ -282,10 +282,8 @@ int main() {
 			obj_hive.foul();
 			break;
 
-		}
-
-
-	}
+		};
+	};
 	system("pause");
 	return 0;
 }
