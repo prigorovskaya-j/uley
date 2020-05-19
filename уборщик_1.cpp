@@ -47,17 +47,19 @@ public:
 	double editMed(double toEdit) { 
 		return (med += toEdit);
 	}
-	int editWater(int toEdit) { 
+	int editWater(double toEdit) { 
 		return (water += toEdit);
 	}
 	double getGraz() {
 		return graz;
 	}
 	double getMed() {
+		cout<<"med:"<<med<<endl;
 		return med;
 	}
 	int getWater() {
 		return water;
+
 	}
 };
 
@@ -97,10 +99,11 @@ public:
 	virtual void eat_akt() = 0;
 
 	void drinking() {
-		if (drink>0 && drink<=25){ 
+		if (drink>0 && drink<=25 && obj_hive.getWater()>0){ 
 			drink += 0.2;
-			cout << "drink +0.2" << endl;
-			cout<<"drink:"<<drink<<endl;
+			obj_hive.editWater(-0.2);
+			cout << "drink +0.2 :"<<drink<<endl;
+			cout<<"water: "<<obj_hive.getWater()<<endl;
 		} else cout<<"drink:"<<drink<<endl;
 		
 	};
@@ -124,8 +127,10 @@ public:
 		if(obj_hive.getMed()>0 && sitost>0 && sitost<=25){
 				obj_hive.editMed(-0.3);	 //Hive::med-=0.3;
 				sitost += 0.3;
-				cout << "sitost +0.3; med -0.3" << endl;
-				cout<<"sitost"<<sitost<<endl;	
+				drink -=0.2;
+				cout << "sitost +0.3; med -0.3, drink -0.2" << endl;
+				cout<<"sitost"<<sitost<<endl;
+				cout<<"med:"<<obj_hive.getMed();
 		} else {	
 			cout<<"sitost= "<<sitost<<endl;
 			cout<<"med"<<obj_hive.getMed();
@@ -145,9 +150,11 @@ public:
 		else
 		for (int i = 0; i < 60; i += 15) {
 			cout << obj_hive.getGraz()<<endl;
-			
+			if(obj_hive.getMed()<=0 || obj_hive.getWater()<=0){
+				die();
+			};
 			if (obj_hive.getGraz() != 0) { //Hive::graz!=0
-				if(sitost>0 && drink>0 && energy>6){
+				if(sitost>0 && drink>0 && energy>6 && obj_hive.getMed()>0){
 					obj_hive.editGraz(-1);	//Hive::graz--;
 					sitost -= 0.3;
 					drink -= 0.2;
@@ -156,6 +163,7 @@ public:
 					cout<<"energy:"<<energy<<endl;
 					cout<<"drink:"<<drink<<endl;
 					cout<<"sitost"<<sitost<<endl;	
+
 				}	else {
 						cout<<"graz ="<<obj_hive.getGraz()<<endl;
 						cout<<"energy="<<energy<<endl;
@@ -163,7 +171,7 @@ public:
 						cout<<"sitost="<<sitost<<endl;
 					}
 			};
-			if (sitost>0 && sitost<25 && drink>0 && energy>0) {
+			if (sitost>0 && sitost<25 && drink>0 && energy>0 && obj_hive.getMed()>0) {
 				eat_akt();
 				drink -= 0.2;
 				energy -= 6;
@@ -171,10 +179,11 @@ public:
 				cout<<"energy:"<<energy<<endl;
 				cout<<"drink:"<<drink<<endl;
 			}
-			else if (drink < 25) {
+			else if (drink < 25 && obj_hive.getWater()>0) {
 				drinking();
+				
 			}
-			else if (energy < 110 && sitost>0 && drink>0) {
+			else if (energy < 110 && sitost>0 && drink>0 && obj_hive.getMed()>0 && obj_hive.getWater()>0 ) {
 				otdih();
 				sitost -= 0.2;
 				drink -= 0.2;
