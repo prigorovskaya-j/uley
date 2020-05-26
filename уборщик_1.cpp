@@ -47,7 +47,7 @@ public:
 	double editMed(double toEdit) { 
 		return (med += toEdit);
 	}
-	int editWater(double toEdit) { 
+	double editWater(double toEdit) { 
 		return (water += toEdit);
 	}
 	double getGraz() {
@@ -57,7 +57,7 @@ public:
 		cout<<"med:"<<med<<endl;
 		return med;
 	}
-	int getWater() {
+	double getWater() {
 		return water;
 
 	}
