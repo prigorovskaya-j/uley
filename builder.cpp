@@ -18,8 +18,10 @@ protected:
 	double nectar;
 	double soty;
 	double water;
+	double vosk;
 public:
 	Hive() {
+		vosk = 0;
 		graz = 0;
 		med = 0;
 		water = 0;
@@ -41,7 +43,9 @@ public:
 
 	void foul() { //загрязняться
 		graz += 1.5;
+		//vosk += 0.3;
 		cout << "graz=" << graz << endl;
+		//cout << "vosk= " << vosk << endl;
 	};
 
 	/*	void build() {
@@ -55,6 +59,9 @@ public:
 				}
 			};
 		*/
+ 	double editVosk(double toEdit) {
+		return (vosk += toEdit);
+	}
 	double editGraz(double toEdit) {
 		return (graz += toEdit);
 	}
@@ -69,6 +76,9 @@ public:
 	}
 	double editWater(double toEdit) {
 		return (water += toEdit);
+	}
+	double getVosk() {
+		return vosk;
 	}
 	double getNectar() {
 		return nectar;
@@ -94,6 +104,7 @@ class Bees {
 
 protected:
 	int age;
+	double wax;
 	double sitost;
 	int energy;
 	double drink;
@@ -101,17 +112,23 @@ protected:
 
 public:
 
-
 	Bees(Hive& obj) : obj_hive(obj) {
 		sitost = 25;
 		energy = 110;
 		drink = 25;
+		wax = 0;
 		cout << "const_bees" << endl;
 	};
 	~Bees() {
 		cout << "destr_bees" << endl;
 	};
 
+	void createWax() {
+		if (energy > 0 && sitost > 0 && drink > 0) {
+			wax += 0.5;
+			cout << "wax: " << wax << endl; 
+		};
+	};
 	void otdih() {
 
 		if (energy > 0 && energy < 110) {
@@ -119,11 +136,7 @@ public:
 			cout << "energy+15: " << energy << endl;
 		}
 		else  cout << "energy: " << energy << endl;
-
-
 	};
-
-	virtual void eat_akt() = 0;
 
 	void drinking() {
 		if (drink > 0 && drink <= 25 && obj_hive.getWater() > 0) {
@@ -136,6 +149,7 @@ public:
 
 	};
 
+	virtual void eat_akt() = 0;
 	virtual void die() = 0;
 };
 
@@ -185,6 +199,7 @@ public:
 				if (obj_hive.getGraz() > 0) { //Hive::graz!=0
 					if (sitost > 0 && drink > 0 && energy > 6 && obj_hive.getMed() > 0) {
 						obj_hive.editGraz(-1);	//Hive::graz--;
+						createWax();
 						sitost -= 0.3;
 						drink -= 0.2;
 						energy -= 6;
@@ -195,40 +210,96 @@ public:
 						cout << "sitost" << sitost << endl;
 
 					}
-					else {
-						cout << "graz =" << obj_hive.getGraz() << endl;
-						cout << "energy=" << energy << endl;
-						cout << "drink=" << drink << endl;
-						cout << "sitost=" << sitost << endl;
+					if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
+						eat_akt();
+						drink -= 0.2;
+						energy -= 6;
+						createWax();
+						cout << "cleaner: drink -0.2; energy -6" << endl;
+						cout << "energy:" << energy << endl;
+						cout << "drink:" << drink << endl;
 					}
+					else if (drink < 25 && obj_hive.getWater()>0) {
+						drinking();
+						sitost -= 0.3;
+						energy -= 6;
+						createWax();
+						cout << "cleaner: sitost -0.3; energy -6" << endl;
+					}
+					else if (energy < 110 && sitost>0 && drink > 0 && obj_hive.getMed() > 0 && obj_hive.getWater() > 0) {
+						otdih();
+						sitost -= 0.2;
+						drink -= 0.2;
+						createWax();
+						cout << "cleaner: sitost -0.2; drink -0.2" << endl;
+						cout << "sitost" << sitost << endl;
+						cout << "drink:" << drink << endl;
+					}
+					else if (drink <= 0 || sitost <= 0 || energy <= 0) {
+						die();
+					};
 				};
-				if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
-					eat_akt();
-					drink -= 0.2;
-					energy -= 6;
-					cout << "cleaner: drink -0.2; energy -6" << endl;
-					cout << "energy:" << energy << endl;
-					cout << "drink:" << drink << endl;
-				}
-				else if (drink < 25 && obj_hive.getWater()>0) {
-					drinking();
-					sitost -= 0.3;
-					energy -= 6;
-					cout << "cleaner: sitost -0.3; energy -6" << endl;
-				}
-				else if (energy < 110 && sitost>0 && drink > 0 && obj_hive.getMed() > 0 && obj_hive.getWater() > 0) {
-					otdih();
-					sitost -= 0.2;
-					drink -= 0.2;
-					cout << "cleaner: sitost -0.2; drink -0.2" << endl;
-					cout << "sitost" << sitost << endl;
-					cout << "drink:" << drink << endl;
-				}
-				else if (drink <= 0 || sitost <= 0 || energy <= 0) {
-					die();
-				}
 			};
+	};
 
+	void clean_wax() {
+
+		if (sitost <= 0 || drink <= 0 || energy <= 0) {
+			die();
+		}
+		else
+			for (int i = 0; i < 60; i += 15) {
+				cout << "Vosk: " << obj_hive.getVosk() << endl;
+				cout << "Wax: " << wax << endl;
+				if (obj_hive.getMed() <= 0 || obj_hive.getWater() <= 0) {
+					die();
+				};
+				if (wax > 0) { //Hive::graz!=0
+					if (sitost > 0 && drink > 0 && energy > 6 && obj_hive.getMed() > 0) {
+						obj_hive.editVosk(0.5);	//Hive::graz--;
+						wax -= 0.5;
+						sitost -= 0.3;
+						drink -= 0.2;
+						energy -= 6;
+						createWax();
+						cout << "cleaner: vosk +0.5; wax -0.5; sitost -0.3; drink -0.2; energy -6" << endl;
+						cout << "energy: " << energy << endl;
+						cout << "drink: " << drink << endl;
+						cout << "sitost: " << sitost << endl;
+						cout << "wax: " << wax << endl;
+						cout << "vosk:" << obj_hive.getVosk() << endl;
+
+					}
+					if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
+						eat_akt();
+						createWax();
+						drink -= 0.2;
+						energy -= 6;
+						cout << "cleaner: drink -0.2; energy -6" << endl;
+						cout << "energy:" << energy << endl;
+						cout << "drink:" << drink << endl;
+					}
+					else if (drink > 0 && drink < 25 && obj_hive.getWater()>0 && energy > 0 && sitost > 0) {
+						drinking();
+						createWax();
+						sitost -= 0.3;
+						energy -= 6;
+						cout << "cleaner: sitost -0.3; energy -6" << endl;
+					}
+					else if (energy > 0 && energy < 110 && sitost>0 && drink > 0) {
+						otdih();
+						createWax();
+						sitost -= 0.2;
+						drink -= 0.2;
+						cout << "cleaner: sitost -0.2; drink -0.2" << endl;
+						cout << "sitost" << sitost << endl;
+						cout << "drink:" << drink << endl;
+					}
+					else if (drink <= 0 || sitost <= 0 || energy <= 0) {
+						die();
+					};
+				};
+			};
 	};
 };
 
@@ -263,6 +334,7 @@ public:
 					if (sitost > 0 && drink > 0 && energy > 0 && obj_hive.getMed() > 0 && obj_hive.getNectar() > 0) {
 						obj_hive.editNectar(-1);	//Hive::graz--;
 						obj_hive.editMed(0.7);
+						createWax();
 						sitost -= 0.6;
 						drink -= 0.2;
 						energy -= 6;
@@ -272,13 +344,15 @@ public:
 						cout << "drink:" << drink << endl;
 						cout << "sitost" << sitost << endl;
 
-					}else {
+					}
+					else {
+						createWax();
 						cout << "nectar =" << obj_hive.getNectar() << endl;
 						cout << "med = " << obj_hive.getMed() << endl;
 						cout << "energy=" << energy << endl;
 						cout << "drink=" << drink << endl;
 						cout << "sitost=" << sitost << endl;
-					}
+					};
 				};
 				if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
 					cout << "build eat" << endl;
@@ -286,6 +360,7 @@ public:
 					energy -= 6;
 					cout << "builder: drink -0.2; energy -6" << endl;
 					eat_akt();
+					createWax();
 				}
 				else if (sitost > 0 && drink > 0 && drink < 25 && energy>0 && obj_hive.getWater() > 0) {
 					cout << "build drink" << endl;
@@ -293,6 +368,7 @@ public:
 					energy -= 6;
 					cout << "builder:  sitost -0.6 ; energy -6" << endl;
 					drinking();
+					createWax();
 				}
 				else if (sitost > 0 && drink > 0 && energy > 0 && energy < 110) {
 					cout << "builder otdih" << endl;
@@ -300,6 +376,7 @@ public:
 					drink -= 0.2;
 					cout << "builder:  sitost -0.6; drink -0.2" << endl;
 					otdih();
+					createWax();
 				}
 				else if (drink <= 0 || sitost <= 0 || energy <= 0) {
 					cout << "Builder die" << endl;
@@ -307,6 +384,73 @@ public:
 				};
 			};
 
+	};
+	void build_soty() {
+		if (sitost <= 0 || drink <= 0 || energy <= 0) {
+			die();
+		}
+		else
+			for (int i = 0; i < 60; i += 15) {
+				cout << obj_hive.getVosk() << endl;
+				if (obj_hive.getMed() <= 0 || obj_hive.getWater() <= 0) {
+					die();
+				}
+				if (obj_hive.getVosk() >= 0) {
+					cout << "builder build soty" << endl;
+					if (sitost > 0 && drink > 0 && energy > 0 &&  obj_hive.getVosk() > 0) {
+						obj_hive.editVosk(-1);	//Hive::graz--;
+						obj_hive.editSoty(0.7);
+						createWax();
+						sitost -= 0.6;
+						drink -= 0.2;
+						energy -= 6;
+						cout << "builder: " << endl;
+						cout << "vosk -1; soty +0.7; sitost -0.6; drink -0.2; energy -6" << endl;
+						cout << "energy:" << energy << endl;
+						cout << "drink: " << drink << endl;
+						cout << "sitost: " << sitost << endl;
+						cout << "vosk: " << obj_hive.getVosk() << endl;
+						cout << "soty: " << obj_hive.getSoty() << endl; 
+
+					}
+					else {
+						createWax();
+						cout << "nectar =" << obj_hive.getNectar() << endl;
+						cout << "med = " << obj_hive.getMed() << endl;
+						cout << "energy=" << energy << endl;
+						cout << "drink=" << drink << endl;
+						cout << "sitost=" << sitost << endl;
+					};
+				};
+				if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
+					cout << "build eat" << endl;
+					drink -= 0.2;
+					energy -= 6;
+					cout << "builder: drink -0.2; energy -6" << endl;
+					eat_akt();
+					createWax();
+				}
+				else if (sitost > 0 && drink > 0 && drink < 25 && energy>0 && obj_hive.getWater() > 0) {
+					cout << "build drink" << endl;
+					sitost -= 0.6;
+					energy -= 6;
+					cout << "builder:  sitost -0.6 ; energy -6" << endl;
+					drinking();
+					createWax();
+				}
+				else if (sitost > 0 && drink > 0 && energy > 0 && energy < 110) {
+					cout << "builder otdih" << endl;
+					sitost -= 0.6;
+					drink -= 0.2;
+					cout << "builder:  sitost -0.6; drink -0.2" << endl;
+					otdih();
+					createWax();
+				}
+				else if (drink <= 0 || sitost <= 0 || energy <= 0) {
+					cout << "Builder die" << endl;
+					die();
+				};
+			};
 	};
 	
 };
@@ -332,28 +476,27 @@ int main() {
 			break;
 		case 1:
 			obj_hive.foul();
-			obj_clean.cleaner_up();
+			obj_clean.clean_wax();
 			obj_build.build();
 			break;
 		case 2:
-
 			obj_hive.foul();
 			obj_clean.cleaner_up();
 			obj_build.build();
 			break;
 		case 3:
 			obj_hive.foul();
-			obj_clean.cleaner_up();
+			obj_clean.clean_wax();
 			obj_build.build();
 			break;
 		case 4:
 			obj_hive.foul();
 			obj_clean.cleaner_up();
-			obj_build.build();
+			obj_build.build_soty();
 			break;
 		case 5:
 			obj_hive.foul();
-			obj_clean.cleaner_up();
+			obj_clean.clean_wax();
 			obj_build.build();
 			break;
 		case 6:
@@ -363,8 +506,8 @@ int main() {
 			break;
 		case 7:
 			obj_hive.foul();
-			obj_clean.cleaner_up();
-			obj_build.build();
+			obj_clean.clean_wax();
+			obj_build.build_soty();
 			break;
 		case 8:
 			obj_hive.foul();
@@ -373,8 +516,8 @@ int main() {
 			break;
 		case 9:
 			obj_hive.foul();
-			obj_clean.cleaner_up();
-			obj_build.build();
+			obj_clean.clean_wax();
+			obj_build.build_soty();
 			break;
 		case 10:
 			obj_hive.foul();
@@ -383,46 +526,71 @@ int main() {
 			break;
 		case 11:
 			obj_hive.foul();
+			obj_clean.clean_wax();
+			obj_build.build();
 			break;
 		case 12:
 			obj_hive.foul();
+			obj_clean.cleaner_up();
+			obj_build.build();
 			break;
 		case 13:
 			obj_hive.foul();
+			obj_clean.clean_wax();
+			obj_build.build();
 			break;
 		case 14:
 			obj_hive.foul();
+			obj_clean.cleaner_up();
+			obj_build.build_soty();
 			break;
 		case 15:
 			obj_hive.foul();
+			obj_clean.clean_wax();
+			obj_build.build();
 			break;
 		case 16:
 			obj_hive.foul();
+			obj_clean.cleaner_up();
+			obj_build.build();
 			break;
 		case 17:
 			obj_hive.foul();
+			obj_clean.clean_wax();
+			obj_build.build();
 			break;
 		case 18:
 			obj_hive.foul();
+			obj_clean.cleaner_up();
+			obj_build.build();
 			break;
 		case 19:
 			obj_hive.foul();
+			obj_clean.clean_wax();
+			obj_build.build_soty();
 			break;
 		case 20:
 			obj_hive.foul();
+			obj_clean.cleaner_up();
+			obj_build.build();
 			break;
 		case 21:
 			obj_hive.foul();
+			obj_clean.clean_wax();
+			obj_build.build();
 			break;
 		case 22:
 			obj_hive.foul();
+			obj_clean.cleaner_up();
+			obj_build.build();
 			break;
 		case 23:
 			obj_hive.foul();
+			obj_clean.clean_wax();
+			obj_build.build();
 			break;
-
 		};
 	};
 	system("pause");
 	return 0;
-}
+};
