@@ -2,23 +2,32 @@
 
 using namespace std;
 
-//РїРѕР»Рµ
 class Area {
 protected:
-	//int hive[]; //СѓР»РµР№
-	int flovers[];
+	Area* arr_hive = new Area[2];
+	Area* arr_flowers = new Area[50];
+public: 
+	Area() {
+
+	};
+	~Area() {
+		delete[] arr_hive;
+		delete[] arr_flowers; 
+	}
 };
 
 
 class Hive {
 protected:
-
+	int size;
+	Hive* arr_bees = new Hive[size];
 	double graz;
 	double med;
 	double nectar;
 	double soty;
 	double water;
 	double vosk;
+
 public:
 	Hive() {
 		vosk = 0;
@@ -31,8 +40,11 @@ public:
 	};
 	~Hive() {
 		cout << "destr_hive" << endl;
+		delete[] arr_bees; 
 	};
 	void initial_condtion() {
+		cout << "enter max size: " << endl;
+		cin >> size; 
 		cout << "Введите начальное количество меда" << endl;
 		cin >> med;
 		cout << "Введите начальное количество воды" << endl;
@@ -43,22 +55,9 @@ public:
 
 	void foul() { //загрязняться
 		graz += 1.5;
-		//vosk += 0.3;
 		cout << "graz=" << graz << endl;
-		//cout << "vosk= " << vosk << endl;
 	};
 
-	/*	void build() {
-			if(soty>1){
-				cout<<"building hive"<<endl;
-			}
-		};*/
-		/*	void divide() { //делиться
-				if(soty>1){
-					cout<<"building hive"<<endl;
-				}
-			};
-		*/
  	double editVosk(double toEdit) {
 		return (vosk += toEdit);
 	}
@@ -455,17 +454,74 @@ public:
 	
 };
 
+class Queen : public Bees {
+protected:
+	int position = 0;
+public:
+	Queen(Hive& obj) :Bees(obj) {};
+	~Queen() {
+		cout << "destr Queen";
+	};
+	void eat_akt() {
+		sitost += 0.6;
+		cout << "sitosk +0.6" << endl;
+		obj_hive.editMed(-0.6);
+		cout << "med: " << obj_hive.getMed();
+	};
+	void die() {
+		this->~Queen();
+		cout << "DIE Quuen" << endl;
+	};
+	void CreateBees() {
+		if (sitost <= 0 || drink <= 0 || energy <= 0) {
+			die();
+		}
+		else
+			if (sitost > 0 && drink > 0 && energy > 0) {
+				for (int i = 0; i < 7; i++) {
+					*arr_bees[position] = obj_bess;
+					position++;
+				}
+				sitost -= 1;
+				cout << "sitost -1: " << sitost << endl;
+				drink -= 0.5;
+				cout << "drink -0.5: " << drink << endl;
+				energy -= 10;
+				cout << "energy -10: " << energy << endl;
+			}
+	};
+	void QueenLife() {
+		if (sitost <= 0 || drink <= 0 || energy <= 0) {
+			die();
+		}
+		else if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
+			sitost += 0.6;
+			obj_hive.editMed(-0.6);
+			cout << "sitost +0.6: " << sitost << "; " << "med: " << obj_hive.getMed() << ";" << endl;
+			drink -= 0.2;
+			energy -= 6;
+			cout << "drink -0.2: " << drink << "; " << "energy -6: " << energy << ";" << endl;
+		}
+		else if (sitost > 0 && energy > 0 && drink > 0 && drink < 25 && obj_hive.getWater()>0) {
+			drinking();
+		}
+		else if (sitost > 0 && drink > 0 && energy > 0 && energy < 110) {
+			otdih();
+		};
+	};
+};
+
+
+
 int main() {
 	setlocale(LC_ALL, "rus");
 	Hive obj_hive;
 	Cleaner obj_clean(obj_hive);
 	Builder obj_build(obj_hive);
+	Queen obj_queen(obj_hive);
 
 	obj_hive.initial_condtion();
-
-	const int LENGHT = 100;
-	Hive arr_bees[LENGHT];
-
+	
 	for (int i = 0; i < 23; i++) {
 
 		switch (i) {
