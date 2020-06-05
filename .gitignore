@@ -33,7 +33,7 @@
 
 #Visual Studio
 HiveApp/.vs
-.user
-.filters
+*.user
+*.filters
 
 */Debug/
