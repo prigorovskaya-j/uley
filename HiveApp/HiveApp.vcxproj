@@ -147,15 +147,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bee.cpp" />
+    <ClCompile Include="Bees.cpp" />
+    <ClCompile Include="Builder.cpp" />
     <ClCompile Include="Cleaner.cpp" />
     <ClCompile Include="Hive.cpp" />
     <ClCompile Include="HiveApp.cpp" />
+    <ClCompile Include="Queen.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bee.h" />
+    <ClInclude Include="Bees.h" />
+    <ClInclude Include="Builder.h" />
     <ClInclude Include="Cleaner.h" />
     <ClInclude Include="Hive.h" />
+    <ClInclude Include="Queen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

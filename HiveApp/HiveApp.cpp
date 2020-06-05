@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Hive.h"
 #include "Cleaner.h"
+#include "Builder.h"
+#include "Queen.h"
 
 using namespace std;
 
@@ -9,94 +11,104 @@ int main()
 	setlocale(LC_ALL, "rus");
 	Hive* hive = new Hive();
 	Cleaner* cleaner = new Cleaner(hive);
+	Builder* builder = new Builder(hive);
+	Queen* queen = new Queen(hive);
 
-	hive->Initialise();
+	hive->initial_condtion();
 
 	for (int i = 0; i < 23; i++) {
 
 		switch (i) {
 		case 0:
-			hive->Pollute();
+			hive->foul();
 			cleaner->Test();
-			cleaner->Up();
+			cleaner->cleaner_up();
+			builder->build();
 			break;
 		case 1:
 
-			hive->Pollute();
-			cleaner->Up();
+			hive->foul();
+			cleaner->cleaner_up();
+			builder->build();
 			break;
 		case 2:
 
-			hive->Pollute();
-			cleaner->Up();
+			hive->foul();
+			cleaner->cleaner_up();
+			builder->build();
 			break;
 		case 3:
-			hive->Pollute();
-			cleaner->Up();
+			hive->foul();
+			cleaner->cleaner_up();
+			builder->build();
 
 			break;
 		case 4:
-			hive->Pollute();
-			cleaner->Up();
-			break;
+			hive->foul();
+			cleaner->cleaner_up();
+			builder->build();
+			break; 
 		case 5:
-			hive->Pollute();
-			cleaner->Up();
+			hive->foul();
+			cleaner->cleaner_up();
+			builder->build_soty();
 			break;
 		case 6:
-			hive->Pollute();
-			cleaner->Up();
+			hive->foul();
+			cleaner->cleaner_up();
+			builder->build();
 			break;
 		case 7:
-			hive->Pollute();
+			hive->foul();
+			builder->build();
 			break;
 		case 8:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 9:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 10:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 11:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 12:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 13:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 14:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 15:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 16:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 17:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 18:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 19:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 20:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 21:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 22:
-			hive->Pollute();
+			hive->foul();
 			break;
 		case 23:
-			hive->Pollute();
+			hive->foul();
 			break;
 
 		};

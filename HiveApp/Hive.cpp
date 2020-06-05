@@ -3,21 +3,32 @@
 
 Hive::Hive()
 {
-    pollutionValue = 0;
-    honeyAmount = 0;
-    waterAmount = 0;
+	vosk = 0;
+	graz = 0;
+	med = 0;
+	water = 0;
+	nectar = 0;
+	soty = 0;
+	cout << "const_hive" << endl;
 };
 
-void Hive::Pollute()
-{
-    pollutionValue += 1.5;
+Hive::~Hive() {
+	cout << "destr_hive" << endl;
+	delete[] arr_hive;
 };
 
-void Hive::Initialise()
-{
+void Hive::foul() { //загр€зн€тьс€
+	graz += 1.5;
+	cout << "graz=" << graz << endl;
+};
 
-    cout << "Enter initial honey amount:" << endl;
-    cin >> honeyAmount;
-    cout << "Enter initial water amount:" << endl;
-    cin >> waterAmount;
-}
+void Hive:: initial_condtion() {
+	/*cout << "enter max size: " << endl;
+	cin >> size; */
+	cout << "¬ведите начальное количество меда" << endl;
+	cin >> med;
+	cout << "¬ведите начальное количество воды" << endl;
+	cin >> water;
+	cout << "¬ременно введите начальное количество нектара" << endl;
+	cin >> nectar;
+};

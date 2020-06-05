@@ -1,11 +1,15 @@
 #pragma once
 
-#include "Bee.h"
+#include "Bees.h"
 
-class Cleaner : Bee
+class Cleaner : Bees
 {
-public:
-    Cleaner(Hive* hive);
+public:    
+    Cleaner(Hive* hive); 
+    ~Cleaner();
+    void eat_akt();
+    void die();
+    void cleaner_up();
     void Test();
-    void Up();
+    void clean_wax();
 };
