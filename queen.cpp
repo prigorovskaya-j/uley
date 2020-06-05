@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ public:
 class Hive {
 protected:
 	int size;
-	Hive* arr_bees = new Hive[size];
+	Hive* arr_hive = new Hive[size];
 	double graz;
 	double med;
 	double nectar;
@@ -40,11 +41,12 @@ public:
 	};
 	~Hive() {
 		cout << "destr_hive" << endl;
-		delete[] arr_bees; 
+		delete[] arr_hive; 
 	};
+	
 	void initial_condtion() {
-		cout << "enter max size: " << endl;
-		cin >> size; 
+		/*cout << "enter max size: " << endl;
+		cin >> size; */
 		cout << "Введите начальное количество меда" << endl;
 		cin >> med;
 		cout << "Введите начальное количество воды" << endl;
@@ -108,9 +110,8 @@ protected:
 	int energy;
 	double drink;
 	Hive& obj_hive;
-
+	vector<Bees> vec;
 public:
-
 	Bees(Hive& obj) : obj_hive(obj) {
 		sitost = 25;
 		energy = 110;
@@ -118,9 +119,23 @@ public:
 		wax = 0;
 		cout << "const_bees" << endl;
 	};
+
 	~Bees() {
 		cout << "destr_bees" << endl;
+		//delete[] arr_bees;
 	};
+	vector<Bees>::iterator ITER;
+	/*void editVector() {
+		do {
+			getline(cin, buffer);
+			if (buffer.size() > 0) {
+				// Добавление элемента в конец вектора
+				vec.push_back(buffer);
+			}
+		} while (buffer != "");
+		unsigned int vector_size = vec.size();
+		//vec.resize(7,Bees obj_bees); - добавит
+	};*/
 
 	void createWax() {
 		if (energy > 0 && sitost > 0 && drink > 0) {
@@ -455,8 +470,8 @@ public:
 };
 
 class Queen : public Bees {
-protected:
-	int position = 0;
+//protected:
+	
 public:
 	Queen(Hive& obj) :Bees(obj) {};
 	~Queen() {
@@ -479,8 +494,7 @@ public:
 		else
 			if (sitost > 0 && drink > 0 && energy > 0) {
 				for (int i = 0; i < 7; i++) {
-					*arr_bees[position] = obj_bess;
-					position++;
+				
 				}
 				sitost -= 1;
 				cout << "sitost -1: " << sitost << endl;
