@@ -3,15 +3,20 @@
 #include "Bees.h"
 
 Bees::Bees(Hive* hive) {
-	sitost = 25;
+	fullness = 25;
 	energy = 110;
 	drink = 25;
 	wax = 0;
 	age = 0;
 	cout << "const_bees" << endl;
 };
+void Bees::checkingDeath() {
+	if (fullness <= 0 || drink <= 0 || energy <= 0) {
+		die();
+	};
+};
 void Bees::createWax() {
-	if (energy > 0 && sitost > 0 && drink > 0) {
+	if (energy > 0 && fullness > 0 && drink > 0) {
 		wax += 0.5;
 		cout << "wax: " << wax << endl;
 	};

@@ -7,10 +7,10 @@ class Hive
 private:
 	int size;
 	Hive* arr_hive = new Hive[size];
-	double graz;
-	double med;
+	double mud;
+	double honey;
 	double nectar;
-	double soty;
+	double honeycombs;
 	double water;
 	double vosk;
     
@@ -18,17 +18,19 @@ public:
     Hive();
 	~Hive();
     void foul();
-    void initial_condtion();
+    void initialCondtion();
+
 	double editVosk(double toEdit);
-	double editGraz(double toEdit);
-	double editSoty(double toEdit);
+	double editMud(double toEdit);
+	double editHoneycombs(double toEdit);
 	double editNectar(double toEdit);
-	double editMed(double toEdit);
+	double editHoney(double toEdit);
 	double editWater(double toEdit);
+
 	double getVosk();
 	double getNectar();
-	double getSoty();
-	double getGraz();
-	double getMed();
+	double getHoneycombs();
+	double getMud();
+	double getHoney();
 	double getWater();
 };

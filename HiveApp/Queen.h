@@ -1,8 +1,8 @@
 #pragma once
- 
+
 #include "Bees.h"
 
-class Queen{
+class Queen: public Bees{
 public: 
 	Queen(Hive* hive);
 	~Queen();
@@ -10,5 +10,4 @@ public:
 	void die();
 	void CreateBees();
 	void QueenLife();
-
 };

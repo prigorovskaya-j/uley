@@ -2,12 +2,13 @@
 #include <vector>
 #include "Hive.h"
 
-class Bees
-{
+using namespace std;
+
+class Bees: public Hive{
 protected:
 	int age;
 	double wax;
-	double sitost;
+	double fullness;
 	int energy;
 	double drink;
 	Hive& obj_hive;
@@ -17,6 +18,7 @@ public:
 	~Bees();
 	vector<Bees>::iterator ITER;
 	void createWax();
+	void checkingDeath();
 	//void editVector();
 	void otdih();
 	void drinking();

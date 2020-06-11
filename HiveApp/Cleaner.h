@@ -2,14 +2,14 @@
 
 #include "Bees.h"
 
-class Cleaner : Bees
+class Cleaner : public Bees
 {
 public:    
     Cleaner(Hive* hive); 
     ~Cleaner();
     void eat_akt();
     void die();
-    void cleaner_up();
+    void cleanerUp();
     void Test();
-    void clean_wax();
+    void cleanWax();
 };

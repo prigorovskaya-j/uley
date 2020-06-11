@@ -4,11 +4,11 @@
 Hive::Hive()
 {
 	vosk = 0;
-	graz = 0;
-	med = 0;
+	mud = 0;
+	honey = 0;
 	water = 0;
 	nectar = 0;
-	soty = 0;
+	honeycombs = 0;
 	cout << "const_hive" << endl;
 };
 
@@ -18,15 +18,15 @@ Hive::~Hive() {
 };
 
 void Hive::foul() { //загр€зн€тьс€
-	graz += 1.5;
-	cout << "graz=" << graz << endl;
+	mud += 1.5;
+	cout << "mud=" << mud << endl;
 };
 
-void Hive:: initial_condtion() {
+void Hive:: initialCondtion() {
 	/*cout << "enter max size: " << endl;
 	cin >> size; */
 	cout << "¬ведите начальное количество меда" << endl;
-	cin >> med;
+	cin >> honey;
 	cout << "¬ведите начальное количество воды" << endl;
 	cin >> water;
 	cout << "¬ременно введите начальное количество нектара" << endl;

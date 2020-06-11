@@ -14,48 +14,51 @@ int main()
 	Builder* builder = new Builder(hive);
 	Queen* queen = new Queen(hive);
 
-	hive->initial_condtion();
+	hive->initialCondtion();
 
 	for (int i = 0; i < 23; i++) {
-
+		cleaner->checkingDeath();
+		builder->checkingDeath();
+		queen->checkingDeath();
 		switch (i) {
 		case 0:
+
 			hive->foul();
 			cleaner->Test();
-			cleaner->cleaner_up();
+			cleaner->cleanerUp();
 			builder->build();
 			break;
 		case 1:
 
 			hive->foul();
-			cleaner->cleaner_up();
+			cleaner->cleanerUp();
 			builder->build();
 			break;
 		case 2:
 
 			hive->foul();
-			cleaner->cleaner_up();
+			cleaner->cleanerUp();
 			builder->build();
 			break;
 		case 3:
 			hive->foul();
-			cleaner->cleaner_up();
+			cleaner->cleanerUp();
 			builder->build();
 
 			break;
 		case 4:
 			hive->foul();
-			cleaner->cleaner_up();
+			cleaner->cleanerUp();
 			builder->build();
 			break; 
 		case 5:
 			hive->foul();
-			cleaner->cleaner_up();
-			builder->build_soty();
+			cleaner->cleanerUp();
+			builder->buildHoneycombs();
 			break;
 		case 6:
 			hive->foul();
-			cleaner->cleaner_up();
+			cleaner->cleanerUp();
 			builder->build();
 			break;
 		case 7:

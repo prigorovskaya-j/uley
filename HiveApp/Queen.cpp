@@ -1,30 +1,27 @@
 #include <iostream>
 #include "Queen.h"
+
 Queen::Queen(Hive* hive) {};
 Queen::~Queen() {
 	cout << "destr Queen";
 }; 
 void Queen::eat_akt() {
-	sitost += 0.6;
-	cout << "sitosk +0.6" << endl;
-	obj_hive.editMed(-0.6);
-	cout << "med: " << obj_hive.getMed();
+	fullness += 0.6;
+	cout << "fullness +0.6" << endl;
+	obj_hive.editHoney(-0.6);
+	cout << "honey: " << obj_hive.getHoney();
 };
 void Queen::die() {
 	this->~Queen();
 	cout << "DIE Quuen" << endl;
 };
 void Queen::CreateBees() {
-	if (sitost <= 0 || drink <= 0 || energy <= 0) {
-		die();
-	}
-	else
-		if (sitost > 0 && drink > 0 && energy > 0) {
+		if (fullness > 0 && drink > 0 && energy > 0) {
 			for (int i = 0; i < 7; i++) {
 
 			}
-			sitost -= 1;
-			cout << "sitost -1: " << sitost << endl;
+			fullness -= 1;
+			cout << "fullness -1: " << fullness << endl;
 			drink -= 0.5;
 			cout << "drink -0.5: " << drink << endl;
 			energy -= 10;
@@ -32,21 +29,19 @@ void Queen::CreateBees() {
 		}
 };
 void Queen::QueenLife() {
-	if (sitost <= 0 || drink <= 0 || energy <= 0) {
-		die();
-	}
-	else if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
-		sitost += 0.6;
-		obj_hive.editMed(-0.6);
-		cout << "sitost +0.6: " << sitost << "; " << "med: " << obj_hive.getMed() << ";" << endl;
+
+	 if (fullness > 0 && fullness < 25 && drink>0 && energy > 0 && obj_hive.getHoney() > 0) {
+		fullness += 0.6;
+		obj_hive.editHoney(-0.6);
+		cout << "fullness +0.6: " << fullness << "; " << "honey: " << obj_hive.getHoney() << ";" << endl;
 		drink -= 0.2;
 		energy -= 6;
 		cout << "drink -0.2: " << drink << "; " << "energy -6: " << energy << ";" << endl;
 	}
-	else if (sitost > 0 && energy > 0 && drink > 0 && drink < 25 && obj_hive.getWater()>0) {
+	else if (fullness > 0 && energy > 0 && drink > 0 && drink < 25 && obj_hive.getWater()>0) {
 		drinking();
 	}
-	else if (sitost > 0 && drink > 0 && energy > 0 && energy < 110) {
+	else if (fullness > 0 && drink > 0 && energy > 0 && energy < 110) {
 		otdih();
 	};
 };
