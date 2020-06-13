@@ -28,9 +28,6 @@ void Cleaner::cleanerUp() {
 
 		for (int i = 0; i < 60; i += 15) {
 			cout << obj_hive.getMud() << endl;
-			if (obj_hive.getHoney() <= 0 || obj_hive.getWater() <= 0) {
-				die();
-			};
 			if (obj_hive.getMud() > 0) { //Hive::mud!=0
 				if (fullness > 0 && drink > 0 && energy > 6 && obj_hive.getHoney() > 0) {
 					obj_hive.editMud(-1);	//Hive::mud--;
@@ -79,9 +76,6 @@ void Cleaner::cleanWax() {
 		for (int i = 0; i < 60; i += 15) {
 			cout << "Vosk: " << obj_hive.getVosk() << endl;
 			cout << "Wax: " << wax << endl;
-			if (obj_hive.getHoney() <= 0 || obj_hive.getWater() <= 0) {
-				die();
-			};
 			if (wax > 0) { //Hive::mud!=0
 				if (fullness > 0 && drink > 0 && energy > 6 && obj_hive.getHoney() > 0) {
 					obj_hive.editVosk(0.5);	//Hive::mud--;
@@ -123,9 +117,7 @@ void Cleaner::cleanWax() {
 					cout << "fullness" << fullness << endl;
 					cout << "drink:" << drink << endl;
 				}
-				else if (drink <= 0 || fullness <= 0 || energy <= 0) {
-					die();
-				};
+
 			};
 		};
 };

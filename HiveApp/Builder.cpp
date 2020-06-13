@@ -19,9 +19,6 @@ void Builder::build() {
 
 		for (int i = 0; i < 60; i += 15) {
 			cout << obj_hive.getNectar() << endl;
-			if (obj_hive.getHoney() <= 0 || obj_hive.getWater() <= 0) {
-				die();
-			}
 			if (obj_hive.getNectar() >= 0) {
 				cout << "builder build honey" << endl;
 				if (fullness > 0 && drink > 0 && energy > 0 && obj_hive.getHoney() > 0 && obj_hive.getNectar() > 0) {
