@@ -16,6 +16,16 @@ int main()
 
 	hive->initialCondtion();
 
+	vector<Bees>::iterator ITER;
+	int N;
+	cout << "size hive:" << endl;
+	cin >> N;
+	vector<Bees> Arr(N);
+	for (ITER = Arr.begin(); ITER != Arr.end(); ++ITER)
+	{
+		ITER->cleaner;
+		ITER->builder;
+	};
 	for (int i = 0; i < 23; i++) {
 		cleaner->checkingDeath();
 		builder->checkingDeath();
