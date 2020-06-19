@@ -50,19 +50,15 @@ public:
 
 class Hive {
 protected:
-	
-
-	//Hive* arr_hive = new Hive[size];
-	double graz;
-	double med;
+	double dirt;
+	double honey;
 	double nectar;
-	double soty;
+	double honeycomb;
 	double water;
-	double vosk;
+	double beeswax;
 	int size;
 
 public:
-
 	vector <Cleaner> arrayCleaner;
 	vector <Builder> arrayBuilder;
 	vector <Waterpot> arrayWaterpot;
@@ -71,77 +67,73 @@ public:
 	Hive(int size);
 	~Hive() {
 		cout << "destr_hive" << endl;
-		//delete[] arr_hive;
 	};
 
 	void initial_condtion() {
 		cout << "¬ведите начальное количество меда" << endl;
-		cin >> med;
+		cin >> honey;
 		cout << "¬ведите начальное количество воды" << endl;
 		cin >> water;
 		cout << "¬ременно введите начальное количество нектара" << endl;
 		cin >> nectar;
 	};
 
-	void foul() { //загр€зн€тьс€
-		graz += 1.5;
-		cout << "graz=" << graz << endl;
+	void foul() {
+		dirt += 1.5;
+		cout << "dirt=" << dirt << endl;
 	};
 
-	double editVosk(double toEdit) {
-		return (vosk += toEdit);
+	double editBeeswax(double toEdit) {
+		return (beeswax += toEdit);
 	}
-	double editGraz(double toEdit) {
-		return (graz += toEdit);
+	double editDirt(double toEdit) {
+		return (dirt += toEdit);
 	}
-	double editSoty(double toEdit) {
-		return(soty += toEdit);
+	double editHoneycomb(double toEdit) {
+		return(honeycomb += toEdit);
 	}
 	double editNectar(double toEdit) {
 		return (nectar += toEdit);
 	}
-	double editMed(double toEdit) {
-		return (med += toEdit);
+	double editHoney(double toEdit) {
+		return (honey += toEdit);
 	}
 	double editWater(double toEdit) {
 		return (water += toEdit);
 	}
-	double getVosk() {
-		return vosk;
+	double getBeeswax() {
+		return beeswax;
 	}
 	double getNectar() {
 		return nectar;
 	}
-	double getSoty() {
-		return soty;
+	double getHoneycomb() {
+		return honeycomb;
 	}
-	double getGraz() {
-		return graz;
+	double getDirt() {
+		return dirt;
 	}
-	double getMed() {
-		cout << "med:" << med << endl;
-		return med;
+	double getHoney() {
+		cout << "honey:" << honey << endl;
+		return honey;
 	}
 	double getWater() {
 		return water;
 	}
 };
 
-
 class Bees {
-
 protected:
-
 	int age;
 	double wax;
-	double sitost;
+	double fullness;
 	int energy;
 	double drink;
 	Hive& obj_hive;
-public:
 
+public:
 	Bees(Hive& obj) : obj_hive(obj) {
-		sitost = 25;
+		fullness = 25;
 		energy = 110;
 		drink = 25;
 		wax = 0;
@@ -151,31 +143,27 @@ public:
 
 	~Bees() {
 		cout << "destr_bees" << endl;
-		//delete[] arr_bees;
 	};
 
-	void checkingDeath() {
-		if (sitost <= 0 || drink <= 0 || energy <= 0) {
-			die();
+	bool checkingDeath() {
+		if (fullness <= 0 || drink <= 0 || energy <= 0) {
+			return 0;
 		}
-		else { cout << "bees life" << endl; };
+		else { return 1; };
 	};
-
 	void createWax() {
-		if (energy > 0 && sitost > 0 && drink > 0) {
+		if (energy > 0 && fullness > 0 && drink > 0) {
 			wax += 0.5;
 			cout << "wax: " << wax << endl;
 		};
 	};
-	void otdih() {
-
+	void relax() {
 		if (energy > 0 && energy < 110) {
 			energy += 15;
 			cout << "energy+15: " << energy << endl;
 		}
 		else  cout << "energy: " << energy << endl;
 	};
-
 	void drinking() {
 		if (drink > 0 && drink <= 25 && obj_hive.getWater() > 0) {
 			drink += 0.2;
@@ -186,9 +174,7 @@ public:
 		else cout << "drink:" << drink << endl;
 
 	};
-
-	virtual void eat_akt() {};
-	virtual void die() {};
+	virtual void eatAktively() {};
 };
 
 
@@ -204,127 +190,75 @@ public:
 	};
 
 	void test() {
-		cout << obj_hive.getGraz() << endl;
+		cout << obj_hive.getDirt() << endl;
 	};
-	void eat_akt() {
-		if (obj_hive.getMed() > 0 && sitost > 0 && sitost <= 25) {
-			obj_hive.editMed(-0.3);	 //Hive::med-=0.3;
-			sitost += 0.3;
+	void eatAktively() {
+		if (obj_hive.getHoney() > 0 && fullness > 0 && fullness <= 25) {
+			obj_hive.editHoney(-0.3);	 
+			fullness += 0.3;
 			drink -= 0.2;
-			cout << "cleaner: sitost +0.3; med -0.3, drink -0.2" << endl;
-			cout << "sitost" << sitost << endl;
-			cout << "med:" << obj_hive.getMed();
+			cout << "cleaner: fullness +0.3= "<<fullness<<"; "<< "honey -0.3 = "<<obj_hive.getHoney()<<"; "<< "drink -0.2 = "<<drink << endl;
 		}
-		else {
-			cout << "sitost= " << sitost << endl;
-			cout << "med" << obj_hive.getMed();
-		};
+		else cout << "Don't eat: fulness = " << fullness << ";" << "honey" << obj_hive.getHoney() << endl;
 
 	};
-	void die() {
+	/*void die() override {
 		this->~Cleaner();
 		cout << "DIE CLEANER" << endl;
-	};
+	};*/
 
-	void cleaner_up() {
+	void cleanUp() {
 			for (int i = 0; i < 60; i += 15) {
-				cout << obj_hive.getGraz() << endl;
-				if (obj_hive.getMed() <= 0 || obj_hive.getWater() <= 0) {
-					die();
-				};
-				if (obj_hive.getGraz() > 0) { //Hive::graz!=0
-					if (sitost > 0 && drink > 0 && energy > 6 && obj_hive.getMed() > 0) {
-						obj_hive.editGraz(-1);	//Hive::graz--;
-						createWax();
-						sitost -= 0.3;
-						drink -= 0.2;
-						energy -= 6;
-
-						cout << "cleaner: graz -1; sitost -0.3; drink -0.2; energy -6" << endl;
-						cout << "energy:" << energy << endl;
-						cout << "drink:" << drink << endl;
-						cout << "sitost" << sitost << endl;
-
-					}
-					if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
-						eat_akt();
-						drink -= 0.2;
-						energy -= 6;
-						createWax();
-						cout << "cleaner: drink -0.2; energy -6" << endl;
-						cout << "energy:" << energy << endl;
-						cout << "drink:" << drink << endl;
-					}
-					else if (drink < 25 && obj_hive.getWater()>0) {
-						drinking();
-						sitost -= 0.3;
-						energy -= 6;
-						createWax();
-						cout << "cleaner: sitost -0.3; energy -6" << endl;
-					}
-					else if (energy < 110 && sitost>0 && drink > 0 && obj_hive.getMed() > 0 && obj_hive.getWater() > 0) {
-						otdih();
-						sitost -= 0.2;
-						drink -= 0.2;
-						createWax();
-						cout << "cleaner: sitost -0.2; drink -0.2" << endl;
-						cout << "sitost" << sitost << endl;
-						cout << "drink:" << drink << endl;
-					}
-				};
+				cout << obj_hive.getDirt() << endl;
+				if (obj_hive.getDirt() > 0) {
+					obj_hive.editDirt(-1);
+					fullness -= 0.3;
+					drink -= 0.2;
+					energy -= 6;
+					cout << "Cleaner clean: dirt -1 = " << obj_hive.getDirt()<< ";" << "fullness -0.3 = " << fullness << ";" << "drink -0.2 = " << drink << ";" << "energy -6 = " << energy << endl;
+				}
+				else cout << "Little dirt" << endl;
+			};
+			createWax();
+	};
+	
+	void cleanWax() {
+			cout << "Cleaner clean wax:" << endl;
+			for (int i = 0; i < 60; i += 15) {
+				if (wax > 0) {
+					obj_hive.editBeeswax(0.5);
+					wax -= 0.5;
+					fullness -= 0.3;
+					drink -= 0.2;
+					energy -= 6;
+					cout << "Cleaner: beeswax +0.5 = " << obj_hive.getBeeswax() << "; " << "wax -0.5 = " << wax << "; " << "fullness -0.3 = " << fullness << "; " << "drink -0.2 = " << drink << "; " << "energy -6 = " << energy << endl;
+					createWax();
+				}
+				else cout << "Little wax" << endl;
 			};
 	};
-
-	void clean_wax() {
-			for (int i = 0; i < 60; i += 15) {
-				cout << "Vosk: " << obj_hive.getVosk() << endl;
-				cout << "Wax: " << wax << endl;
-				if (obj_hive.getMed() <= 0 || obj_hive.getWater() <= 0) {
-					die();
-				};
-				if (wax > 0) { //Hive::graz!=0
-					if (sitost > 0 && drink > 0 && energy > 6 && obj_hive.getMed() > 0) {
-						obj_hive.editVosk(0.5);	//Hive::graz--;
-						wax -= 0.5;
-						sitost -= 0.3;
-						drink -= 0.2;
-						energy -= 6;
-						createWax();
-						cout << "cleaner: vosk +0.5; wax -0.5; sitost -0.3; drink -0.2; energy -6" << endl;
-						cout << "energy: " << energy << endl;
-						cout << "drink: " << drink << endl;
-						cout << "sitost: " << sitost << endl;
-						cout << "wax: " << wax << endl;
-						cout << "vosk:" << obj_hive.getVosk() << endl;
-
-					}
-					if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
-						eat_akt();
-						createWax();
-						drink -= 0.2;
-						energy -= 6;
-						cout << "cleaner: drink -0.2; energy -6" << endl;
-						cout << "energy:" << energy << endl;
-						cout << "drink:" << drink << endl;
-					}
-					else if (drink > 0 && drink < 25 && obj_hive.getWater()>0 && energy > 0 && sitost > 0) {
-						drinking();
-						createWax();
-						sitost -= 0.3;
-						energy -= 6;
-						cout << "cleaner: sitost -0.3; energy -6" << endl;
-					}
-					else if (energy > 0 && energy < 110 && sitost>0 && drink > 0) {
-						otdih();
-						createWax();
-						sitost -= 0.2;
-						drink -= 0.2;
-						cout << "cleaner: sitost -0.2; drink -0.2" << endl;
-						cout << "sitost" << sitost << endl;
-						cout << "drink:" << drink << endl;
-					}
-				};
-			};
+	void cleanerLife() {
+		if (fullness > 0 && fullness < 25 && drink>0 && energy > 0 && obj_hive.getHoney() > 0) {
+			eatAktively();
+			drink -= 0.2;
+			energy -= 6;
+			cout << "Cleaner: drink -0.2 = " << drink << "; " << "energy -6 = " << energy << endl;
+			createWax();
+		}
+		else if (drink > 0 && drink < 25 && obj_hive.getWater()>0 && energy > 0 && fullness > 0) {
+			drinking();
+			fullness -= 0.3;
+			energy -= 6;
+			cout << "Cleaner DRINK: fullness -0.3 = " << fullness << ";" << "energy -6 = " << energy << endl;
+			createWax();
+		}
+		else if (energy > 0 && energy < 110 && fullness>0 && drink > 0) {
+			relax();
+			fullness -= 0.2;
+			drink -= 0.2;
+			cout << "Cleaner RELAX: cleaner: fullness -0.2 = " << fullness << "; " << "drink -0.2 = " << drink << endl;
+			createWax();
+		}
 	};
 };
 
@@ -336,135 +270,73 @@ public:
 	~Builder() {
 		cout << "destr builder";
 	};
-	void eat_akt() {
-		sitost += 0.6;
-		cout << "sitosk +0.6" << endl;
-		obj_hive.editMed(-0.6);
-		cout << "med: " << obj_hive.getMed();
+	void eatAktively() {
+		fullness += 0.6;
+		obj_hive.editHoney(-0.6);
+		cout << "Builder EAT: fulness +0.6 = "<<fullness<<"; " <<"honey: " << obj_hive.getHoney();
 	};
-	void die() {
-		this->~Builder();
-		cout << "DIE BUILDER" << endl;
+	void builderLife() {
+		if (fullness > 0 && fullness < 25 && drink>0 && energy > 0 && obj_hive.getHoney() > 0) {
+			eatAktively();
+			drink -= 0.2;
+			energy -= 6;
+			cout << "builder: drink -0.2 = " << drink << "; " << "energy -6 = " << energy << endl;
+			createWax();
+		}
+		else if (fullness > 0 && drink > 0 && drink < 25 && energy>0 && obj_hive.getWater() > 0) {
+			cout << "Builder DRINK: " << endl;
+			drinking();
+			fullness -= 0.6;
+			energy -= 6;
+			cout << "builder:  fullness -0.6 = " << fullness << "; " << " energy -6 = " << energy << endl;
+			createWax();
+		}
+		else if (fullness > 0 && drink > 0 && energy > 0 && energy < 110) {
+			cout << "Builder RELAX: " << endl;
+			relax();
+			fullness -= 0.6;
+			drink -= 0.2;
+			cout << "builder: fullness -0.6 = " << fullness << "; " << "drink -0.2 = " << drink << endl;
+			
+			createWax();
+		}
 	};
-
 	void build() {
-			for (int i = 0; i < 60; i += 15) {
-				cout << obj_hive.getNectar() << endl;
-				if (obj_hive.getMed() <= 0 || obj_hive.getWater() <= 0) {
-					die();
-				}
-				if (obj_hive.getNectar() >= 0) {
-					cout << "builder build med" << endl;
-					if (sitost > 0 && drink > 0 && energy > 0 && obj_hive.getMed() > 0 && obj_hive.getNectar() > 0) {
-						obj_hive.editNectar(-1);	//Hive::graz--;
-						obj_hive.editMed(0.7);
-						createWax();
-						sitost -= 0.6;
-						drink -= 0.2;
-						energy -= 6;
-						cout << "builder: " << endl;
-						cout << "nectar -1; med +0.7; sitost -0.6; drink -0.2; energy -6" << endl;
-						cout << "energy:" << energy << endl;
-						cout << "drink:" << drink << endl;
-						cout << "sitost" << sitost << endl;
-
-					}
-					else {
-						createWax();
-						cout << "nectar =" << obj_hive.getNectar() << endl;
-						cout << "med = " << obj_hive.getMed() << endl;
-						cout << "energy=" << energy << endl;
-						cout << "drink=" << drink << endl;
-						cout << "sitost=" << sitost << endl;
-					};
-				};
-				if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
-					cout << "build eat" << endl;
-					drink -= 0.2;
-					energy -= 6;
-					cout << "builder: drink -0.2; energy -6" << endl;
-					eat_akt();
-					createWax();
-				}
-				else if (sitost > 0 && drink > 0 && drink < 25 && energy>0 && obj_hive.getWater() > 0) {
-					cout << "build drink" << endl;
-					sitost -= 0.6;
-					energy -= 6;
-					cout << "builder:  sitost -0.6 ; energy -6" << endl;
-					drinking();
-					createWax();
-				}
-				else if (sitost > 0 && drink > 0 && energy > 0 && energy < 110) {
-					cout << "builder otdih" << endl;
-					sitost -= 0.6;
-					drink -= 0.2;
-					cout << "builder:  sitost -0.6; drink -0.2" << endl;
-					otdih();
-					createWax();
-				}
+		for (int i = 0; i < 60; i += 15) {
+			if (obj_hive.getNectar() > 0) {
+				cout << "Builder build honey: " << endl;
+				obj_hive.editNectar(-1);	//Hive::dirt--;
+				obj_hive.editHoney(0.7);
+				fullness -= 0.6;
+				drink -= 0.2;
+				energy -= 6;
+				cout << "builder: " << endl;
+				cout << "nectar -1 = " << obj_hive.getNectar() << "; " << "honey +0.7 = " << obj_hive.getHoney() << ";" << "fullness -0.6" << fullness << "; " << " drink -0.2 = " << drink << "; " << "energy -6 = " << energy << "." << endl;
+			} else {
+				cout << "little nectar =" << obj_hive.getNectar() << endl;
 			};
+		};
+		createWax();
+	};
+	void buildHoneycomb() {
+		for (int i = 0; i < 60; i += 15) {
+			if (obj_hive.getBeeswax() > 0) {
+				cout << "builder build honeycomb: " << endl;
+				obj_hive.editBeeswax(-1);
+				obj_hive.editHoneycomb(0.7);
+				fullness -= 0.6;
+				drink -= 0.2;
+				energy -= 6;
+				cout << "builder: beeswax -1 = "<<obj_hive.getBeeswax()<<";"<<"honeycomb +0.7 = "<< obj_hive.getHoneycomb()<<";"<<"fullness -0.6 = "<<fullness<<";" <<"drink -0.2 = "<<drink<<";"<<"energy -6 = " <<energy << endl;
+				createWax();
+			}
+			else {
+				createWax();
+				cout << " little wax =" << obj_hive.getBeeswax() << endl;
+			};
+		};
 
 	};
-	void build_soty() {
-			for (int i = 0; i < 60; i += 15) {
-				cout << obj_hive.getVosk() << endl;
-				if (obj_hive.getMed() <= 0 || obj_hive.getWater() <= 0) {
-					die();
-				}
-				if (obj_hive.getVosk() >= 0) {
-					cout << "builder build soty" << endl;
-					if (sitost > 0 && drink > 0 && energy > 0 && obj_hive.getVosk() > 0) {
-						obj_hive.editVosk(-1);	//Hive::graz--;
-						obj_hive.editSoty(0.7);
-						createWax();
-						sitost -= 0.6;
-						drink -= 0.2;
-						energy -= 6;
-						cout << "builder: " << endl;
-						cout << "vosk -1; soty +0.7; sitost -0.6; drink -0.2; energy -6" << endl;
-						cout << "energy:" << energy << endl;
-						cout << "drink: " << drink << endl;
-						cout << "sitost: " << sitost << endl;
-						cout << "vosk: " << obj_hive.getVosk() << endl;
-						cout << "soty: " << obj_hive.getSoty() << endl;
-
-					}
-					else {
-						createWax();
-						cout << "nectar =" << obj_hive.getNectar() << endl;
-						cout << "med = " << obj_hive.getMed() << endl;
-						cout << "energy=" << energy << endl;
-						cout << "drink=" << drink << endl;
-						cout << "sitost=" << sitost << endl;
-					};
-				};
-				if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
-					cout << "build eat" << endl;
-					drink -= 0.2;
-					energy -= 6;
-					cout << "builder: drink -0.2; energy -6" << endl;
-					eat_akt();
-					createWax();
-				}
-				else if (sitost > 0 && drink > 0 && drink < 25 && energy>0 && obj_hive.getWater() > 0) {
-					cout << "build drink" << endl;
-					sitost -= 0.6;
-					energy -= 6;
-					cout << "builder:  sitost -0.6 ; energy -6" << endl;
-					drinking();
-					createWax();
-				}
-				else if (sitost > 0 && drink > 0 && energy > 0 && energy < 110) {
-					cout << "builder otdih" << endl;
-					sitost -= 0.6;
-					drink -= 0.2;
-					cout << "builder:  sitost -0.6; drink -0.2" << endl;
-					otdih();
-					createWax();
-				}
-			};
-	};
-
 };
 
 class Waterpot : public Bees {
@@ -473,50 +345,45 @@ public:
 
 	};
 	~Waterpot() {
-		cout << "destr builder";
+		cout << "destr waterpot"<<endl;
 	};
-	void eat_akt() {
-		sitost += 0.4;
-		cout << "sitosk +0.6" << endl;
-		obj_hive.editMed(-0.6);
-		cout << "med: " << obj_hive.getMed();
+	void eatAktively() {
+		fullness += 0.4;
+		obj_hive.editHoney(-0.4);
+		cout << "Waterpot EAT: sitosk +0.4 = " << fullness << "; " << "honey: " << obj_hive.getHoney() << endl;
 	};
-	void die() {
-		this->~Waterpot();
-		cout << "DIE Waterpot" << endl;
-	};
+	
 	void collectWater() {
 		obj_hive.editWater(rand() % 2 + 1);
-		cout << "water ++:" << obj_hive.getWater();
-		sitost -= 0.4;
+		cout << "Waterpot collect water: " << obj_hive.getWater()<<endl;
+		fullness -= 0.4;
 		energy -= 6;
 		drink -= 0.2;
-		cout << "Waterpot:  sitost -0.6; drink -0.2; energy -6" << endl;
+		cout << "Waterpot collect water:  fullness -0.4 = " << fullness << ";" << "drink -0.2 = " <<drink<< "; " << "energy -6 = " << energy << endl;
 		createWax();
 	};
 	void waterpotLife() {
-		if (sitost > 0 && sitost < 25 && drink>0 && energy > 0 && obj_hive.getMed() > 0) {
-			cout << "waterpot eat" << endl;
+		if (fullness > 0 && fullness < 25 && drink>0 && energy > 0 && obj_hive.getHoney() > 0) {
 			drink -= 0.2;
 			energy -= 6;
-			cout << "waterpot: drink -0.2; energy -6" << endl;
-			eat_akt();
+			eatAktively();
+			cout << "waterpot: drink -0.2 = " << drink << "; " << "energy -6 = " << energy << endl;
 			createWax();
 		}
-		else if (sitost > 0 && drink > 0 && drink < 25 && energy>0 && obj_hive.getWater() > 0) {
-			cout << "waterpot drink" << endl;
-			sitost -= 0.6;
-			energy -= 6;
-			cout << "waterpot:  sitost -0.6 ; energy -6" << endl;
+		else if (fullness > 0 && drink > 0 && drink < 25 && energy>0 && obj_hive.getWater() > 0) {
+			cout << "Waterpot DRINK: " << endl;
 			drinking();
+			fullness -= 0.4;
+			energy -= 6;
+			cout << "waterpot:  fullness -0.4 "<< fullness<< "; "<< "energy -6 = "<< energy << endl;
 			createWax();
 		}
-		else if (sitost > 0 && drink > 0 && energy > 0 && energy < 110) {
-			cout << "waterpot otdih" << endl;
-			sitost -= 0.6;
+		else if (fullness > 0 && drink > 0 && energy > 0 && energy < 110) {
+			cout << "Waterpot RELAX: " << endl;
+			relax();
+			fullness -= 0.6;
 			drink -= 0.2;
-			cout << "waterpot:  sitost -0.6; drink -0.2" << endl;
-			otdih();
+			cout << "Waterpot:  fullness -0.6 = "<<fullness<<"; "<< "drink -0.2 = "<< drink << endl;
 			createWax();
 		}
 	};
@@ -530,24 +397,52 @@ public:
 	~Collector() {
 		cout << "destr Collector";
 	};
-	void eat_akt() {
-		sitost += 0.4;
-		cout << "sitosk +0.6" << endl;
-		obj_hive.editMed(-0.6);
-		cout << "med: " << obj_hive.getMed();
+	void eatAktively() {
+		fullness += 0.4;
+		obj_hive.editHoney(-0.4);
+		cout << "Collector EAT: sitosk +0.4 = " << fullness << "; " << "honey: " << obj_hive.getHoney() << endl;;
 	};
-	void die() {
-		this->~Collector();
-		cout << "DIE Collector" << endl;
+	
+	void collectorLife() {
+		if (fullness > 0 && fullness < 25 && drink>0 && energy > 0 && obj_hive.getHoney() > 0) {
+			drink -= 0.2;
+			energy -= 6;
+			eatAktively();
+			cout << "collector: drink -0.2 = " << drink << "; " << "energy -6 = " << energy << endl;
+			createWax();
+		}
+		else if (fullness > 0 && drink > 0 && drink < 25 && energy>0 && obj_hive.getWater() > 0) {
+			cout << "Collector DRINK :" << endl;
+			fullness -= 0.4;
+			energy -= 6;
+			cout << "collector:  fullness -0.4 = " << fullness << "; " << " energy -6 = " << energy << endl;
+			drinking();
+			createWax();
+		}
+		else if (fullness > 0 && drink > 0 && energy > 0 && energy < 110) {
+			cout << "Collector RELAX:" << endl;
+			relax();
+			fullness -= 0.4;
+			drink -= 0.2;
+			cout << "collector: fullness -0.4 = " << fullness << "; " << "drink -0.2 = " << drink << endl;
+			createWax();
+		}
 	};
 	void collectNectar(Flowers obj_flow) {
-		double ran;
-		ran = rand() % 2 - 1;
-		obj_hive.editNectar(ran);
-		obj_flow.editNectarFlower(-ran);
-		cout<<"Nectar in flowers:"<<obj_flow.getNectarFlower()<<endl;
+		cout << "Collector collect nectar: " << endl;
+		if (obj_flow.getNectarFlower() > 0) {
+			double ran;
+			ran = rand() % 2 - 1;
+			obj_hive.editNectar(ran);
+			obj_flow.editNectarFlower(-ran);
+			cout << "Nectar " << ran << "= " << obj_hive.getNectar() << endl;
+			cout << "Nectar in flowers " << ran << " = " << obj_flow.getNectarFlower() << endl;
+		}
+		else cout << "Little nectar in flowers" <<obj_flow.getNectarFlower()<< endl;
+
 	};
 };
+
 Hive::Hive(int size) {
 	for (int i = 0; i < size; i++)
 	{
@@ -572,19 +467,19 @@ Hive::Hive(int size) {
 		arrayCollector.push_back(*collector);
 	}
 
-	vosk = 0;
+	beeswax = 0;
 	this->size = size;
-	graz = 0;
-	med = 0;
+	dirt = 0;
+	honey = 0;
 	water = 0;
 	nectar = 0;
-	soty = 0;
+	honeycomb = 0;
 	cout << "const_hive" << endl;
 }
 
 int main() {
 	setlocale(LC_ALL, "rus");
-	Hive obj_hive(10);
+	Hive obj_hive(1);
 	Flowers obj_flow;
 
 	obj_hive.initial_condtion();
@@ -594,117 +489,526 @@ for (int i = 0; i < 23; i++) {
 		case 0:
 			obj_hive.foul();
 			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
-				obj_hive.arrayCleaner[i].checkingDeath();
-				obj_hive.arrayCleaner[i].cleaner_up();
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else obj_hive.arrayCleaner[i].cleanUp(); 
 			};
 			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
-				obj_hive.arrayBuilder[i].checkingDeath();
-				obj_hive.arrayBuilder[i].build();
+				if(obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; } 
+				else obj_hive.arrayBuilder[i].build();
 			};
 			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
-				obj_hive.arrayWaterpot[i].checkingDeath();
-				obj_hive.arrayWaterpot[i].collectWater();
+				if(obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else obj_hive.arrayWaterpot[i].collectWater();
 			};
 			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
-				obj_hive.arrayCollector[i].checkingDeath();
-				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+				if(obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else obj_hive.arrayCollector[i].collectNectar(obj_flow);
 			};
 			break;
 		case 1:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if(obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << "Cleaner is death" << endl; }
+				else obj_hive.arrayCleaner[i].cleanUp();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if(obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else obj_hive.arrayBuilder[i].build();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if(obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 2:
 			obj_hive.foul();
-			
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if(obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else obj_hive.arrayCleaner[i].cleanWax();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if(obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else obj_hive.arrayBuilder[i].buildHoneycomb();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if(obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if(obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 3:
 			obj_hive.foul();
-			
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if(obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else obj_hive.arrayCleaner[i].cleanerLife();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if(obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else obj_hive.arrayBuilder[i].builderLife();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if(obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else obj_hive.arrayWaterpot[i].waterpotLife();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if(obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else obj_hive.arrayCollector[i].collectorLife();
+			};
 			break;
 		case 4:
 			obj_hive.foul();
-			
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if(obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << "Cleaner is death" << endl; }
+				else obj_hive.arrayCleaner[i].cleanUp();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if(obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else obj_hive.arrayBuilder[i].build();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if(obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << "Waterpot is death" << endl; }
+				else obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if(obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << "Collector is death" << endl; }
+				else obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 5:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if(obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << "Cleaner is death" << endl; }
+				else obj_hive.arrayCleaner[i].cleanUp();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if(obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else obj_hive.arrayBuilder[i].build();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if(obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if(obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 6:
 			obj_hive.foul();
-			
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if(obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else obj_hive.arrayCleaner[i].cleanWax();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if(obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else obj_hive.arrayBuilder[i].buildHoneycomb();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if(obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << "Waterpot is death" << endl; }
+				else obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if(obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << "Collector is death" << endl; }
+				else obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 7:
 			obj_hive.foul();
-	
-			break;
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if(obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else obj_hive.arrayCleaner[i].cleanerLife();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if(obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else obj_hive.arrayBuilder[i].builderLife();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].waterpotLife();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectorLife();
+			};
 		case 8:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << "  Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanUp();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].build();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << "Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 9:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << "  Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanUp();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].build();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << "Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 10:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanWax();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].buildHoneycomb();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 11:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << "  Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanerLife();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].builderLife();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << "Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].waterpotLife();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectorLife();
+			};
 			break;
 		case 12:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanUp();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].build();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << "Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 13:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanUp();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].build();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 14:
 			obj_hive.foul();
-			
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanWax();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].buildHoneycomb();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << "Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 15:
 			obj_hive.foul();
-			
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanerLife();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].builderLife();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << "Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].waterpotLife();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << "Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectorLife();
+			};
 			break;
 		case 16:
 			obj_hive.foul();
-			
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanUp();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].build();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 17:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanUp();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].build();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << "Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 18:
 			obj_hive.foul();
-			
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanWax();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].buildHoneycomb();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 19:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanerLife();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].builderLife();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].waterpotLife();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectorLife();
+			};
 			break;
 		case 20:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanUp();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].build();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << "Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 21:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << "  Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanUp();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].build();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 22:
 			obj_hive.foul();
-			
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanWax();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].buildHoneycomb();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].collectWater();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectNectar(obj_flow);
+			};
 			break;
 		case 23:
 			obj_hive.foul();
-		
+			for (vector<Cleaner>::size_type i = 0; i != obj_hive.arrayCleaner.size(); i++) {
+				if (obj_hive.arrayCleaner[i].checkingDeath() == 0) { cout << " Cleaner is death" << endl; }
+				else
+				obj_hive.arrayCleaner[i].cleanerLife();
+			};
+			for (vector<Builder>::size_type i = 0; i != obj_hive.arrayBuilder.size(); i++) {
+				if (obj_hive.arrayBuilder[i].checkingDeath() == 0) { cout << " Builder is death" << endl; }
+				else
+				obj_hive.arrayBuilder[i].builderLife();
+			};
+			for (vector<Waterpot>::size_type i = 0; i != obj_hive.arrayWaterpot.size(); i++) {
+				if (obj_hive.arrayWaterpot[i].checkingDeath() == 0) { cout << " Waterpot is death" << endl; }
+				else
+				obj_hive.arrayWaterpot[i].waterpotLife();
+			};
+			for (vector<Collector>::size_type i = 0; i != obj_hive.arrayCollector.size(); i++) {
+				if (obj_hive.arrayCollector[i].checkingDeath() == 0) { cout << " Collector is death" << endl; }
+				else
+				obj_hive.arrayCollector[i].collectorLife();
+			};
 			break;
 		};
 	};
-	
 	system("pause");
 	return 0;
 };
